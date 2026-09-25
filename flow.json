@@ -1,0 +1,308 @@
+[
+    {
+        "id": "06047bf462c9e047",
+        "type": "tab",
+        "label": "Bulb & Fan Control",
+        "disabled": false,
+        "info": "Web UI only. Bulb GPIO23, Fan GPIO24. No physical button, no auto-off timer."
+    },
+    {
+        "id": "e87269ce1a06d3b8",
+        "type": "ui-switch",
+        "z": "06047bf462c9e047",
+        "name": "Bulb Control",
+        "label": "Bulb",
+        "group": "45af938b0b2d33c6",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "decouple": true,
+        "topic": "bulb",
+        "topicType": "str",
+        "className": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "x": 180,
+        "y": 80,
+        "wires": [
+            [
+                "b1b2c3d4e5f60001"
+            ]
+        ]
+    },
+    {
+        "id": "a1b2c3d4e5f60001",
+        "type": "ui-switch",
+        "z": "06047bf462c9e047",
+        "name": "Fan Control",
+        "label": "Fan",
+        "group": "45af938b0b2d33c6",
+        "order": 2,
+        "width": "6",
+        "height": "1",
+        "passthru": false,
+        "decouple": true,
+        "topic": "fan",
+        "topicType": "str",
+        "className": "",
+        "onvalue": "ON",
+        "onvalueType": "str",
+        "offvalue": "OFF",
+        "offvalueType": "str",
+        "x": 180,
+        "y": 180,
+        "wires": [
+            [
+                "b1b2c3d4e5f60002"
+            ]
+        ]
+    },
+    {
+        "id": "b1b2c3d4e5f60001",
+        "type": "function",
+        "z": "06047bf462c9e047",
+        "name": "Bulb Controller",
+        "func": "const command = String(msg.payload).toUpperCase();\n\nif (command === 'ON') {\n    node.send([\n        { payload: 'ON' },\n        { payload: true },\n        { payload: 'ON' }\n    ]);\n    return null;\n}\n\nif (command === 'OFF') {\n    node.send([\n        { payload: 'OFF' },\n        { payload: false },\n        { payload: 'OFF' }\n    ]);\n    return null;\n}\n\nreturn null;",
+        "outputs": 3,
+        "x": 450,
+        "y": 80,
+        "wires": [
+            [
+                "990df92c4f40400b"
+            ],
+            [
+                "e87269ce1a06d3b8"
+            ],
+            [
+                "8580dffd3b0e2ca9"
+            ]
+        ]
+    },
+    {
+        "id": "b1b2c3d4e5f60002",
+        "type": "function",
+        "z": "06047bf462c9e047",
+        "name": "Fan Controller",
+        "func": "const command = String(msg.payload).toUpperCase();\n\nif (command === 'ON') {\n    node.send([\n        { payload: 'ON' },\n        { payload: true },\n        { payload: 'ON' }\n    ]);\n    return null;\n}\n\nif (command === 'OFF') {\n    node.send([\n        { payload: 'OFF' },\n        { payload: false },\n        { payload: 'OFF' }\n    ]);\n    return null;\n}\n\nreturn null;",
+        "outputs": 3,
+        "x": 450,
+        "y": 180,
+        "wires": [
+            [
+                "c1c2c3d4e5f60001"
+            ],
+            [
+                "a1b2c3d4e5f60001"
+            ],
+            [
+                "e1e2e3e4e5f60001"
+            ]
+        ]
+    },
+    {
+        "id": "990df92c4f40400b",
+        "type": "function",
+        "z": "06047bf462c9e047",
+        "name": "Build pinctrl Bulb GPIO23",
+        "func": "const command = String(msg.payload).toUpperCase();\n\nif (command === 'ON') {\n    msg.payload = 'pinctrl set 23 op dl';\n} else {\n    msg.payload = 'pinctrl set 23 ip pu';\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 80,
+        "wires": [
+            [
+                "333913ce84707044"
+            ]
+        ]
+    },
+    {
+        "id": "c1c2c3d4e5f60001",
+        "type": "function",
+        "z": "06047bf462c9e047",
+        "name": "Build pinctrl Fan GPIO24",
+        "func": "const command = String(msg.payload).toUpperCase();\n\nif (command === 'ON') {\n    msg.payload = 'pinctrl set 24 op dl';\n} else {\n    msg.payload = 'pinctrl set 24 ip pu';\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 180,
+        "wires": [
+            [
+                "d1d2d3d4e5f60001"
+            ]
+        ]
+    },
+    {
+        "id": "333913ce84707044",
+        "type": "exec",
+        "z": "06047bf462c9e047",
+        "command": "",
+        "addpay": true,
+        "append": "",
+        "useSpawn": false,
+        "timer": "",
+        "winHide": false,
+        "name": "Bulb GPIO 23",
+        "x": 960,
+        "y": 80,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d1d2d3d4e5f60001",
+        "type": "exec",
+        "z": "06047bf462c9e047",
+        "command": "",
+        "addpay": true,
+        "append": "",
+        "useSpawn": false,
+        "timer": "",
+        "winHide": false,
+        "name": "Fan GPIO 24",
+        "x": 960,
+        "y": 180,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "8580dffd3b0e2ca9",
+        "type": "ui-text",
+        "z": "06047bf462c9e047",
+        "group": "ebc7ef7703526e1f",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "name": "Bulb Status",
+        "label": "Bulb Status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": true,
+        "font": "Helvetica, sans-serif",
+        "fontSize": "20",
+        "color": "#005bbb",
+        "className": "",
+        "x": 740,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "e1e2e3e4e5f60001",
+        "type": "ui-text",
+        "z": "06047bf462c9e047",
+        "group": "ebc7ef7703526e1f",
+        "order": 2,
+        "width": "6",
+        "height": "1",
+        "name": "Fan Status",
+        "label": "Fan Status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": true,
+        "font": "Helvetica, sans-serif",
+        "fontSize": "20",
+        "color": "#005bbb",
+        "className": "",
+        "x": 740,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "45af938b0b2d33c6",
+        "type": "ui-group",
+        "name": "Control Panel",
+        "page": "35b414025ebff4f3",
+        "width": "6",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": false
+    },
+    {
+        "id": "ebc7ef7703526e1f",
+        "type": "ui-group",
+        "name": "Status",
+        "page": "35b414025ebff4f3",
+        "width": "6",
+        "height": "1",
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": false
+    },
+    {
+        "id": "35b414025ebff4f3",
+        "type": "ui-page",
+        "name": "Home",
+        "ui": "1b01472e02ef3dc3",
+        "path": "/home",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "a323d1a915fe5fd1",
+        "order": 1,
+        "className": "",
+        "visible": true,
+        "disabled": false
+    },
+    {
+        "id": "1b01472e02ef3dc3",
+        "type": "ui-base",
+        "name": "Dashboard 2.0",
+        "path": "/dashboard",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": true,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default"
+    },
+    {
+        "id": "a323d1a915fe5fd1",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#18191b",
+            "primary": "#0d74ce",
+            "bgPage": "#111113",
+            "groupBg": "#212225",
+            "groupOutline": "#363a3f"
+        },
+        "sizes": {
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px",
+            "density": "default"
+        }
+    },
+    {
+        "id": "d25591f1b8bad6c1",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.31.0",
+            "node-red-node-pi-gpio": "2.0.7"
+        }
+    }
+]
